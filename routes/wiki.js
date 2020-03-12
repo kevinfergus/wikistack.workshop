@@ -12,8 +12,16 @@ router.get('/', (req,res,next) => {
 })
 
 router.post('/', async (req,res,next) => {
-  const newPost = req.body;
-  await models.Page.create(newPost)
+  const title = req.body.title;
+  const content =req.body.content;
+
+  const page = new models.Page({
+    title, content
+  })
+  try {
+    await page.save();
+    res.redirect('/');
+  } catch (error) { next(error) }
 
   //res.redirect(`/wiki/${newPost.title}`);
 })
